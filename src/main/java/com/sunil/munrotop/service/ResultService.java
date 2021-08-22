@@ -104,7 +104,7 @@ public class ResultService {
 ●    The ability to specify a maximum height in meters
     */
 
-    // exclude category  
+    // exclude category
     public List<ResultDTO> filterByCatWithMaxMinHeight(int minHeight, int maxHeight, ClientResponse errorResponse) {
         String category = null;
         // validate limit - must be > than zero & not -ve

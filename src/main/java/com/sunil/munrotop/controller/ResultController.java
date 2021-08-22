@@ -32,7 +32,7 @@ public class ResultController {
         return service.filterByCatSortedByHeightAndName(category,heightOrder,nameOrder);
     }
 
-    // TODO - READ RESPONSE ENTITY
+  
     @GetMapping(value = { "/category/limit/{limit}"})
     public ResponseEntity<Object> filterByCatWithLimit(@PathVariable int limit) {
 
