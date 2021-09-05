@@ -1,13 +1,11 @@
 package com.sunil.munrotop.controller;
 
-
-import com.sunil.munrotop.model.ClientResponse;
 import com.sunil.munrotop.model.ResultDTO;
 import com.sunil.munrotop.service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,50 +16,23 @@ public class ResultController {
     @Autowired
     private ResultService service;
 
-    @GetMapping(value = {"/category", "/category/{category}"})
-    public List<ResultDTO> filterByCat(@PathVariable(required = false) String category) {
+   // Use wrapper instead of primitive - for null checks
+    @GetMapping(value = {"/list"})
+    public ResponseEntity<List<ResultDTO>> filterByCatSortedByHeightAndName(@RequestParam (value="category", defaultValue="All") String category,
+                                                            @RequestParam (value="maxHeight",required = false) Integer maxHeight,
+                                                            @RequestParam (value="minHeight",required = false) Integer minHeight,
+                                                            @RequestParam (value="limit"    ,required = false) Integer limit,
+                                                            @RequestParam (value="sort"     ,required = false) String[] sort ) {
 
-        return service.filterByCat(category);
-    }
-
-    @GetMapping(value = {"/category/sorted", "/category/sorted/{category}/{heightOrder}/{nameOrder}"})
-    public List<ResultDTO> filterByCatSortedByHeightAndName(@PathVariable (required = false) String category,
-                                                        @PathVariable (required = false) String heightOrder,
-                                                        @PathVariable (required = false) String nameOrder) {
-
-        return service.filterByCatSortedByHeightAndName(category,heightOrder,nameOrder);
-    }
-
-  
-    @GetMapping(value = { "/category/limit/{limit}"})
-    public ResponseEntity<Object> filterByCatWithLimit(@PathVariable int limit) {
-
-        ClientResponse errorResponse = new ClientResponse();
-
-        List<ResultDTO> result= service.filterByCatWithLimit(limit,errorResponse);
+        List<ResultDTO> result= service.filterWithParams(category,maxHeight,minHeight,limit, sort);
 
         if (result != null) {
             return ResponseEntity.ok(result);
         } else {
-            return ResponseEntity.badRequest().body(errorResponse);
+            return ResponseEntity.badRequest().build();
         }
+
+
     }
-
-    @GetMapping(value = { "/category/height/{minHeight}/{maxHeight}"})
-    public ResponseEntity<Object> filterByCatWithMaxMinHeight(@PathVariable int minHeight,
-                                                              @PathVariable int maxHeight) {
-
-        ClientResponse errorResponse = new ClientResponse();
-
-        List<ResultDTO> result= service.filterByCatWithMaxMinHeight(minHeight,maxHeight,errorResponse);
-
-        if (result != null) {
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
-    }
-
-
 
 }

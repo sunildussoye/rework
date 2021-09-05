@@ -14,6 +14,16 @@ public class ResultDTO {
     @CsvBindByName(column = "Grid Ref")
     private String gridReference;
 
+    public ResultDTO() {
+
+    }
+    public ResultDTO(String hillCategory, BigDecimal height, String name, String gridReference) {
+        this.hillCategory = hillCategory;
+        this.height = height;
+        this.name = name;
+        this.gridReference = gridReference;
+    }
+
     public String getHillCategory() {
 
         return hillCategory;

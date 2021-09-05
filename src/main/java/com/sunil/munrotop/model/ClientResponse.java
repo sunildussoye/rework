@@ -1,21 +1,35 @@
 package com.sunil.munrotop.model;
 
+import java.util.Date;
+
 public class ClientResponse {
+    private int statusCode;
+    private Date timestamp;
     private String message;
+    private String description;
+
+    public ClientResponse(int statusCode,Date timestamp,String message, String description){
+        this.statusCode = statusCode;
+        this.timestamp = timestamp;
+        this.message = message;
+        this.description = description;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
     public String getMessage() {
-
         return message;
     }
 
-    public void setMessage(String message) {
-
-        this.message = message;
-    }
-
-    public ClientResponse withMessage(String message) {
-
-        this.message = message;
-        return this;
+    public String getDescription() {
+        return description;
     }
 }
+
+
