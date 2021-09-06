@@ -16,11 +16,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
+
+// IAIN - Why have this as a separate class?  It's only used by ResultService so why not just put the methods there?
 public class ResultUtil {
 
     public static List<ResultDTO> CSVToObject(String fileName) {
 
         try {
+            // IAIN - FileReader should be used in a try with resources so that it is closed properly
             Resource resource = new ClassPathResource(fileName);
             List<ResultDTO> results = new CsvToBeanBuilder(new FileReader(resource.getFile()))
                     .withType(ResultDTO.class)
@@ -39,6 +42,7 @@ public class ResultUtil {
 
     public static void ValidateFilterCriteria(Integer maxHeight, Integer minHeight, Integer limit) {
 
+        // IAIN - What happens if only minHeight is specified?  The requirements allow the calling code to only provide one.
         if (minHeight != null && maxHeight != null) {
 
             if (minHeight <= 0) {
@@ -59,10 +63,12 @@ public class ResultUtil {
         }
     }
 
+    // IAIN - How do I sort by name and then height or just by height?
     public static List<Comparator<ResultDTO>> sortComparator(String[] sort) {
         String heightOrder = "";
         String nameOrder = "";
 
+        // IAIN - What happens if send an array with only one entry?
         if (sort != null && sort.length > 0) {
             heightOrder = sort[0].split(":")[1];
             nameOrder = sort[1].split(":")[1];
@@ -87,11 +93,14 @@ public class ResultUtil {
 
         //Base Filters
         Predicate<ResultDTO> hillCategoryPredicate = ResultUtil.getPredicate(category);
+        // IAIN - Why not remove these entries during the file load?
+        // IAIN - This is also the second predicate to remove blank categories and unnecessary (see line 114)
         Predicate<ResultDTO> removeHillWithBlankNames = x -> !x.getHillCategory().isEmpty();
 
         allPredicates.add(hillCategoryPredicate);
         allPredicates.add(removeHillWithBlankNames);
 
+        // IAIN - What happens if only minHeight is specified?  The requirements allow the calling code to only provide one.
         // add  heightpredicate
         if (minHeight != null && maxHeight != null) {
             allPredicates.add(x -> x.getHeight().compareTo(BigDecimal.valueOf(minHeight)) >= 0 && x.getHeight().compareTo(BigDecimal.valueOf(maxHeight)) <= 0);

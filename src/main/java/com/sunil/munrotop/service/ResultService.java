@@ -27,6 +27,7 @@ public class ResultService {
 
         List<Comparator<ResultDTO>> sortComparator = ResultUtil.sortComparator(sort);
 
+        // IAIN - The results have been limited before they've been sorted.  This won't give you the results you expect.
        // combine all AND predicates (x-> true)
         return result.stream().filter(allPredicates.stream().reduce(x -> true, Predicate::and))
                 .limit(limit != null ? limit : result.size())
