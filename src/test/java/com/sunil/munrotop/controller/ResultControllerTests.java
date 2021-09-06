@@ -32,6 +32,8 @@ public class ResultControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    // IAIN - This will not work without a Mockito.initMocks(this) in a @Before method.  There's nothing to tell
+    //        the application what it is.  The service will be null and throw a NullPointerException on line 45.
     @Mock
     private ResultService resultService;
 

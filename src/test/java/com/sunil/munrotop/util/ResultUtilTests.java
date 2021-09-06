@@ -68,6 +68,10 @@ public class ResultUtilTests {
         assertEquals(282, category.size());
     }
 
+    // IAIN - Every test below this point that just checks the number of results is very poor.  A good unit test
+    //        should check that they are at least the expected results.  If I changed the filterPredicate method
+    //        to return a number of predicates that just returned true for everything most the tests would still
+    //        pass.
     @Test
     public void returnCorrectNumberOfPredicateThree() {
 
@@ -102,6 +106,7 @@ public class ResultUtilTests {
         assertEquals(2,res.size());
     }
 
+    // IAIN - Why can't min height be zero?
     @Test
     public void returnValidationErrorWhenMinIsZero() {
 
